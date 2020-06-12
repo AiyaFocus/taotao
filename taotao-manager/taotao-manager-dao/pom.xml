@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>taotao-manager</artifactId>
+        <groupId>com.aiyafocus</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <!--
+        如果你的项目是maven项目，请你在编译后，到接口所在目录看一看，
+        很有可能是没有生产对应的xml文件，
+        因为maven默认是不编译的，
+        因此，你需要在你的pom.xml的<build></build>里面，加这么一段：
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        ————————————————
+        版权声明：本文为CSDN博主「二十-帅帅」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+        原文链接：https://blog.csdn.net/qq_18298439/java/article/details/80586789
+    -->
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
+
+    <artifactId>taotao-manager-dao</artifactId>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <!-- POJO引用 -->
+        <dependency>
+            <groupId>com.aiyafocus</groupId>
+            <artifactId>taotao-manager-pojo</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- mybatis 以及mybatis整合spring -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+        </dependency>
+        <!-- mysql -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+        <!-- 导入Druid连接池 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

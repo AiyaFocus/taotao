@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>taotao-manager</artifactId>
+        <groupId>com.aiyafocus</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>taotao-manager-service</artifactId>
+    <packaging>jar</packaging>
+
+    <dependencies>
+        <!-- 业务逻辑层需要依赖数据访问层 -->
+        <dependency>
+            <groupId>com.aiyafocus</groupId>
+            <artifactId>taotao-manager-dao</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- Spring的事务管理，业务逻辑层需要用到事务 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+        </dependency>
+        <!-- spring-webmvc因为@Service注解是属于SpringMVC的注解 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+        <!-- taotao-common里面的工具类大多会在业务逻辑层使用 -->
+        <dependency>
+            <groupId>com.aiyafocus</groupId>
+            <artifactId>taotao-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+        </dependency>
+    </dependencies>
+
+
+</project>
