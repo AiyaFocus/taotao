@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!-- 开启Spring包扫描 -->
+    <context:component-scan base-package="com.aiyafocus.taotao.portal.controller" />
+
+    <!-- 开启SpringMVC的注解驱动 -->
+    <mvc:annotation-driven>
+        <!-- 方法一：开启配置的消息转换器 -->
+        <!--<mvc:message-converters register-defaults="false">-->
+            <!--<ref bean="stringHttpMessageConverter" />-->
+        <!--</mvc:message-converters>-->
+
+        <!-- 方法二：直接配置消息转换器 -->
+        <mvc:message-converters register-defaults="false">
+            <!-- 处理响应为：text文本时，默认使用：ISO-8859-1 的问题 -->
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <!-- 通过构造方法，指定编码 -->
+                <constructor-arg index="0" value="UTF-8" />
+            </bean>
+        </mvc:message-converters>
+        <!--
+            “register-defaults”属性的作用：
+            1.自定义了MessageConverter后，是否再注册默认的MessageConverter，由<mvc:message-converters>标签的“register-defaults="boolean值"”属性指定；
+            2.register-defaults="true"（默认值） ==> 还会注册默认的Converter（加上默认的，就有八个了。并且“自定义的要排到前面”）
+            3.register-defaults="false"         ==> 不会注册默认的Converter
+        -->
+
+    </mvc:annotation-driven>
+
+    <!-- 配置返回Json格式的String字符串的消息转换器，解决中文乱码 -->
+    <!--<bean id="stringHttpMessageConverter" class="org.springframework.http.converter.StringHttpMessageConverter">-->
+        <!--<property name="supportedMediaTypes">-->
+            <!--<list>-->
+                <!--<value>application/json;charset=UTF-8</value>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!-- 配置视图解析器 -->
+    <!--<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">-->
+        <!--<property name="prefix" value="/WEB-INF/jsp/" />-->
+        <!--<property name="suffix" value=".jsp" />-->
+    <!--</bean>-->
+
+    <!-- 静态资源映射 -->
+    <!-- 1.必须有，否则会使requestMapping失效。 -->
+    <!-- 2.location:指location指定的目录不要拦截，直接请求，这里指在根目录下的resources文件下的所有文件 -->
+    <!-- 3.mapping:值在resources文件下的所有文件(**代表所有文件) -->
+    <!-- 4.所有意思就是在根目录下resources的所有文件不会被DispatcherServlet拦截，直接访问，当做静态资源交个Servlet处理 -->
+    <!--<mvc:resources mapping="/js/**" location="/js/" />-->
+    <!--<mvc:resources mapping="/css/**" location="/css/" />-->
+    <!--<mvc:resources mapping="/image/**" location="/image/" />-->
+
+    <!-- 配置SpringMVC提供的文件上传组件：CommonsMultipartResolver，公共多部分解析器 -->
+    <!--<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">-->
+        <!--&lt;!&ndash; 设置默认编码格式为UTF-8 &ndash;&gt;-->
+        <!--<property name="defaultEncoding" value="UTF-8" />-->
+        <!--&lt;!&ndash; 设置最大上传文件的大小，注意：maxUploadSize是以Byte字节为单位 &ndash;&gt;-->
+        <!--<property name="maxUploadSize" value="10485760" />-->
+    <!--</bean>-->
+
+</beans>

@@ -37,6 +37,25 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
+
+        <!-- 关于IDEA自动重置LanguageLevel和JavaCompiler版本的问题解决方案 -->
+        <!--
+            由于目前版本的Maven在构建时默认面向JDK1.5，
+            当Maven的pom.xml文件中未配置JDK版本时，
+            一旦pom.xml文件发生变化，
+            Java Compiler和Language level会自动变回到原来的默认1.5版本。
+        -->
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.0</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
     <artifactId>taotao-manager-dao</artifactId>

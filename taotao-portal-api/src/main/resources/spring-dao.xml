@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 引入数据库连接配置文件 -->
+    <context:property-placeholder location="classpath:database.properties" />
+
+    <!-- 使用Druid连接池技术连接管理数据源 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${mysql.jdbc.driverClassName}" />
+        <property name="url" value="${mysql.jdbc.url}" />
+        <property name="username" value="${mysql.jdbc.username}" />
+        <property name="password" value="${mysql.jdbc.password}" />
+    </bean>
+
+    <!-- 配置SqlSessionFactory连接工厂 -->
+    <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <!-- 不使用MyBatis的配置文件，将MyBatis的配置文件中的分页组件PageHelper，在Spring配置文件中配置 -->
+        <!--<property name="plugins">-->
+            <!--<array>-->
+                <!--<bean class="com.github.pagehelper.PageInterceptor" />-->
+            <!--</array>-->
+        <!--</property>-->
+        <!-- 以上配置无法使用，报空指针错误，报错信息如下： -->
+        <!--
+            ### Error querying database.  Cause: java.lang.NullPointerException
+            ### Cause: java.lang.NullPointerException] with root cause
+            java.lang.NullPointerException
+                at com.github.pagehelper.PageInterceptor.intercept(PageInterceptor.java:147)
+                at org.apache.ibatis.plugin.Plugin.invoke(Plugin.java:61)
+                at com.sun.proxy.$Proxy46.query(Unknown Source)
+                at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:147)
+                at org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(DefaultSqlSession.java:140)
+                at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+                at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+                at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+                at java.lang.reflect.Method.invoke(Method.java:498)
+                at org.mybatis.spring.SqlSessionTemplate$SqlSessionInterceptor.invoke(SqlSessionTemplate.java:433)
+                at com.sun.proxy.$Proxy20.selectList(Unknown Source)
+                at org.mybatis.spring.SqlSessionTemplate.selectList(SqlSessionTemplate.java:230)
+                at org.apache.ibatis.binding.MapperMethod.executeForMany(MapperMethod.java:147)
+                at org.apache.ibatis.binding.MapperMethod.execute(MapperMethod.java:80)
+                at org.apache.ibatis.binding.MapperProxy.invoke(MapperProxy.java:58)
+                at com.sun.proxy.$Proxy25.selectByExample(Unknown Source)
+                at com.aiyafocus.taotao.manager.service.impl.ItemServiceImpl.selectItemList(ItemServiceImpl.java:54)
+                at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+                at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+                at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+                at java.lang.reflect.Method.invoke(Method.java:498)
+                at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:343)
+                at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:206)
+                at com.sun.proxy.$Proxy30.selectItemList(Unknown Source)
+                at com.aiyafocus.taotao.manager.controller.ItemController.itemList(ItemController.java:35)
+                at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+                at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+                at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+                at java.lang.reflect.Method.invoke(Method.java:498)
+                at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:189)
+                at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:138)
+                at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:102)
+                at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:892)
+                at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:797)
+                at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
+                at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1038)
+                at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:942)
+                at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1005)
+                at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:897)
+                at javax.servlet.http.HttpServlet.service(HttpServlet.java:624)
+                at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:882)
+                at javax.servlet.http.HttpServlet.service(HttpServlet.java:731)
+                at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:303)
+                at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:208)
+                at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:52)
+                at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:241)
+                at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:208)
+                at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:200)
+                at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:107)
+                at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:241)
+                at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:208)
+                at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:219)
+                at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:110)
+                at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:494)
+                at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:169)
+                at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:104)
+                at org.apache.catalina.valves.AccessLogValve.invoke(AccessLogValve.java:1025)
+                at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:116)
+                at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:445)
+                at org.apache.coyote.http11.AbstractHttp11Processor.process(AbstractHttp11Processor.java:1137)
+                at org.apache.coyote.AbstractProtocol$AbstractConnectionHandler.process(AbstractProtocol.java:637)
+                at org.apache.tomcat.util.net.JIoEndpoint$SocketProcessor.run(JIoEndpoint.java:319)
+                at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+                at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+                at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+                at java.lang.Thread.run(Thread.java:748)
+
+        -->
+        <property name="configLocation" value="classpath:mybatis-config.xml" />
+    </bean>
+
+    <!-- 配置扫描Mapper接口 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.aiyafocus.taotao.manager.dao" />
+    </bean>
+
+</beans>

@@ -33,6 +33,10 @@ public class BaseResult {
         this.data = data;
     }
 
+    // 无参构造方法
+    public BaseResult() {
+    }
+
     // 写两个静态方法：ok和error供Controller直接调用
     public static BaseResult ok(Object object){
         return new BaseResult(200, object);
