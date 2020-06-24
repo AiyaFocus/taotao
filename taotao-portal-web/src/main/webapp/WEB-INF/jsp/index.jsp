@@ -56,7 +56,7 @@
             +'</ul><div class="slide-controls"><span class="curr">1</span></div>';
         doc.write(TPL);
     }
-})(pageConfig, document);;</script>
+})(pageConfig, document);</script>
 </div><!--slide end-->
 <div class="jscroll" id="mscroll">
 <div class="ctrl" id="mscroll-ctrl-prev"><b></b></div>
